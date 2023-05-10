@@ -16,22 +16,20 @@ for fii in fiis:
     data = json.load(response)
 
     # Processa informações do FII
-    nome = data.get("nomePregao")
-    if nome is None:
+    nome_fundo = data.get("nomePregao")
+    if nome_fundo is None:
         print(f"Erro ao processar FII {fii}: nomePregao não encontrado na resposta da API")
         continue
-    dy = data.get("dividendYield")
-    cota = data.get("valorAtual")
-    patrimonio = data.get("valorPatrimonioPCota")
+    dy_anual = data.get("dividendYield")
+    valor_cota = data.get("valorAtual")
+    vp_cota = data.get("valorPatrimonioPCota")
     rendimento = data["proximoRendimento"].get("rendimento") or data["ultimoRendimento"].get("rendimento")
-    status = "COMPRAR" if cota < patrimonio else "AGUARDAR"
+    status = "COMPRAR" if valor_cota < vp_cota else "AGUARDAR"
 
     # Adiciona informações do FII ao DataFrame
-    row = {"Nome do Fundo": nome_fundo, "Dividend Yield": dy_anual, "Valor da Cota": valor_cota, "Valor Patrimonial por Cota": vp_cota, "Valor do Rendimento": rendimento, "Status": status}
-df_row = pd.DataFrame(row, index=[0])
-df = pd.concat([df, df_row], ignore_index=True)
-
-
+    row = {"Nome do Fundo": nome_fundo, "Dividend Yield anual": dy_anual, "Valor atual da Cota": valor_cota, "Valor patrimonial por cota": vp_cota, "Valor do rendimento": rendimento, "Status": status}
+    df_row = pd.DataFrame(row, index=[0])
+    df = pd.concat([df, df_row], ignore_index=True)
 
 # Grava DataFrame no arquivo CSV
 df.to_csv("informacoes_fiis.csv", index=False)
