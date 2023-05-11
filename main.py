@@ -33,3 +33,22 @@ for fii in fiis:
 
 # Grava DataFrame no arquivo CSV
 df.to_csv("informacoes_fiis.csv", index=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
